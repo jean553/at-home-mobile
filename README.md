@@ -1,5 +1,7 @@
 # at-home-mobile
 
+The mobile part of [AtHome](https://github.com/jean553/at-home).
+
 ## Build the dev environment
 
 ```sh
