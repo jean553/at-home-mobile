@@ -10,7 +10,6 @@ import {
 } from 'native-base';
 
 import {
-    Font,
     MapView,
     TaskManager,
     Location,
@@ -30,11 +29,30 @@ import '../global.js';
 const BACKGROUND_LOCATION_TASK = 'background-location-task';
 
 /**
+ * Defines a background task in order to continuously check the mobile location
+ * and call the server at every location change to know if the user arrived or not.
  *
+ * Background tasks are not part of any component, so they are declared from the outside of them.
  */
-TaskManager.defineTask(BACKGROUND_LOCATION_TASK, (data, error) => {
+TaskManager.defineTask(BACKGROUND_LOCATION_TASK, checkIfUserIsArrived);
 
-    if (error) { return; }
+/**
+ * Background tasks that is called at every device location update
+ * and calls the server in order to know if the user reached the expected destination.
+ *
+ * If the user is arrived, calls the server a second time in order to remove the ride
+ * and stops the background task.
+ *
+ * In any case of an error (from the device or from a server response),
+ * the task is voluntarily stopped in order to prevent any side effect.
+ *
+ * Background tasks are not part of any component, so they are declared from the outside of them.
+ */
+function checkIfUserIsArrived(data, error) {
+
+    if (error) {
+        stopBackgroundLocationTask();
+    }
 
     AsyncStorage.getItem('ride').then(ride => {
 
@@ -55,7 +73,7 @@ TaskManager.defineTask(BACKGROUND_LOCATION_TASK, (data, error) => {
         .then((response) => {
 
             if (response.status !== 200) {
-                Location.stopLocationUpdatesAsync(BACKGROUND_LOCATION_TASK);
+                stopBackgroundLocationTask();
                 return;
             }
 
@@ -72,10 +90,19 @@ TaskManager.defineTask(BACKGROUND_LOCATION_TASK, (data, error) => {
                 { method: 'DELETE' }
             );
 
-            Location.stopLocationUpdatesAsync(BACKGROUND_LOCATION_TASK);
+            stopBackgroundLocationTask();
         });
     });
-});
+}
+
+/**
+ * Stops the currently running background task that updates location.
+ *
+ * Refactored here as it can be called at multiple moments.
+ */
+function stopBackgroundLocationTask() {
+    Location.stopLocationUpdatesAsync(BACKGROUND_LOCATION_TASK);
+}
 
 /**
  *
@@ -108,11 +135,13 @@ export default class AddressScreen extends React.Component {
         };
 
         this.sendRide = this.sendRide.bind(this);
-        this.startBackgroundLocationUpdates = this.startBackgroundLocationUpdates.bind(this);
     }
 
     /**
-     * Sends the ride to the server, reduce the app on success, otherwise displays an error.
+     * Sends the ride to the server, reduces the app on success, otherwise displays an error.
+     * If the ride is successfully sent, then it asynchronously initializes
+     * the continuous check function (for the location) and waits for it.
+     * When the background process is ready, the funtion reduces the app.
      */
     sendRide() {
 
@@ -139,22 +168,15 @@ export default class AddressScreen extends React.Component {
             AsyncStorage.setItem(
                 'ride',
                 response.headers.map.location
-            ).then(this.startBackgroundLocationUpdates);
+            ).then(async () => {
+                await Location.startLocationUpdatesAsync(BACKGROUND_LOCATION_TASK);
+                BackHandler.exitApp();
+            });
         });
     }
 
     /**
-     * Starts the continuous background location checks and reduces the app.
-     */
-    startBackgroundLocationUpdates = async () => {
-
-        await Location.startLocationUpdatesAsync(BACKGROUND_LOCATION_TASK);
-
-        BackHandler.exitApp();
-    }
-
-    /**
-     *
+     * Renders the view.
      */
     render() {
 
