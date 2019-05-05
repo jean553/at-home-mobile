@@ -13,7 +13,6 @@ import {
 import {
     StyleSheet,
     PermissionsAndroid,
-    BackHandler,
     FlatList,
     TouchableOpacity,
 } from 'react-native';
@@ -30,21 +29,18 @@ export default class ContactsScreen extends React.Component {
         super(props);
 
         this.state = {
-            fontsLoaded: false,
-            contactsLoaded: false,
+            componentIsReady: false,
             contacts: [],
         };
 
-        this.loadContacts = this.loadContacts.bind(this);
         this.openAddressPage = this.openAddressPage.bind(this);
-
-        this.loadContacts();
     }
 
     /**
-     * Asks for contacts access and loads the contacts if access granted. Closes the app if access denied.
+     * Called when the component is fully mounted; it loads the phone contacts and the required fonts;
+     * the view start to be rendered only at the end of this function
      */
-    async loadContacts() {
+    async componentDidMount() {
 
         const readContactsPermissionGranted = await Expo.Permissions.askAsync(Expo.Permissions.CONTACTS);
 
@@ -54,28 +50,8 @@ export default class ContactsScreen extends React.Component {
         }
 
         await Contacts.getContactsAsync().then((contacts) => {
-            this.setState({
-                contacts: contacts.data,
-                contactsLoaded: true,
-            })
+            this.setState({ contacts: contacts.data });
         });
-    }
-
-    /**
-     * Redirects to the address selection page when a contact is clicked.
-     */
-    openAddressPage(phoneNumber) {
-
-        const { navigate } = this.props.navigation;
-        navigate("Address", { phoneNumber: phoneNumber });
-    }
-
-    /**
-     * Mounts the TTF font files asynchronously,
-     * this is required by native-base;
-     * the page can be displayed after this operation only
-     */
-    async componentDidMount() {
 
         await Expo.Font.loadAsync({
             Roboto: require("native-base/Fonts/Roboto.ttf"),
@@ -84,18 +60,26 @@ export default class ContactsScreen extends React.Component {
             Axiforma: require("../assets/fonts/axiforma/kastelov_-_axiforma_bold-webfont.ttf"),
         });
 
-        this.setState({ fontsLoaded: true });
+        this.setState({ componentIsReady: true });
     }
 
     /**
+     * Redirects to the address selection page when a contact is clicked.
      *
+     * @param {string} phoneNumber the selected phone number that will received the text message
+     */
+    openAddressPage(phoneNumber) {
+
+        const { navigate } = this.props.navigation;
+        navigate("Address", { phoneNumber: phoneNumber });
+    }
+
+    /**
+     * Renders the view.
      */
     render() {
 
-        if (
-            this.state.fontsLoaded === false ||
-            this.state.contactsLoaded === false
-        ) {
+        if (this.state.componentIsReady === false) {
             return null;
         }
 
