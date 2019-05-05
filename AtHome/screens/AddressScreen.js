@@ -47,6 +47,9 @@ TaskManager.defineTask(BACKGROUND_LOCATION_TASK, checkIfUserIsArrived);
  * the task is voluntarily stopped in order to prevent any side effect.
  *
  * Background tasks are not part of any component, so they are declared from the outside of them.
+ *
+ * @param {object} data the updated geolocation data
+ * @param {object} error any error that may have occured
  */
 function checkIfUserIsArrived(data, error) {
 
