@@ -9,11 +9,10 @@ import {
     Text,
 } from 'native-base';
 
-import {
-    MapView,
-    TaskManager,
-    Location,
-} from 'expo';
+import { Location } from 'expo';
+
+import * as TaskManager from 'expo-task-manager';
+import MapView from 'react-native-maps';
 
 import {
     StyleSheet,

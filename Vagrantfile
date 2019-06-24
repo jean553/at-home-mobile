@@ -28,9 +28,7 @@ Vagrant.configure(2) do |config|
       cd /vagrant/AtHome
       echo 'export REACT_NATIVE_PACKAGER_HOSTNAME=#{REACT_NATIVE_PACKAGER_HOSTNAME} npm start  && cd /vagrant/AtHome' | sudo tee --append /home/vagrant/.zshrc
 
-      yarn add native-base --save
-      yarn add react-navigation
-      yarn add expo-cli
+      yarn install
     "
   end
 end

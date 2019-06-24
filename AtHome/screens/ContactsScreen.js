@@ -5,10 +5,8 @@ import {
     Text,
 } from 'native-base';
 
-import {
-    Font,
-    Contacts,
-} from 'expo';
+import * as Permissions from 'expo-permissions';
+import * as Contacts from 'expo-contacts';
 
 import {
     StyleSheet,
@@ -42,7 +40,7 @@ export default class ContactsScreen extends React.Component {
      */
     async componentDidMount() {
 
-        const readContactsPermissionGranted = await Expo.Permissions.askAsync(Expo.Permissions.CONTACTS);
+        const readContactsPermissionGranted = await Permissions.askAsync(Permissions.CONTACTS);
 
         if (readContactsPermissionGranted === 'granted') {
             BackHandler.exitApp();
@@ -51,13 +49,6 @@ export default class ContactsScreen extends React.Component {
 
         await Contacts.getContactsAsync().then((contacts) => {
             this.setState({ contacts: contacts.data });
-        });
-
-        await Expo.Font.loadAsync({
-            Roboto: require("native-base/Fonts/Roboto.ttf"),
-            Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
-            Ionicons: require("@expo/vector-icons/fonts/Ionicons.ttf"),
-            Axiforma: require("../assets/fonts/axiforma/kastelov_-_axiforma_bold-webfont.ttf"),
         });
 
         this.setState({ componentIsReady: true });
