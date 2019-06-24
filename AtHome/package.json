@@ -7,14 +7,18 @@
     "eject": "expo eject"
   },
   "dependencies": {
-    "expo": "^32.0.0",
-    "expo-cli": "^2.16.1",
-    "expokit": "32.1.1",
+    "expo": "^33.0.3",
+    "expo-cli": "^2.20.2",
+    "expo-contacts": "^5.0.2",
+    "expo-font": "^5.0.1",
+    "expo-task-manager": "^5.0.1",
     "native-base": "^2.12.1",
-    "react": "16.5.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
+    "react": "16.8.3",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-33.0.0.tar.gz",
     "react-native-background-task": "^0.2.1",
-    "react-navigation": "^3.9.1"
+    "react-native-cli": "^2.0.1",
+    "react-native-maps": "^0.24.2",
+    "react-navigation": "^3.11.0"
   },
   "devDependencies": {
     "babel-preset-expo": "^5.0.0"
