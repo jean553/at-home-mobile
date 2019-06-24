@@ -11,6 +11,7 @@
     "expo-cli": "^2.20.2",
     "expo-contacts": "^5.0.2",
     "expo-font": "^5.0.1",
+    "expo-location": "^5.0.1",
     "expo-task-manager": "^5.0.1",
     "native-base": "^2.12.1",
     "react": "16.8.3",
