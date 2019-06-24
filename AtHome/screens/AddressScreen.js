@@ -9,9 +9,9 @@ import {
     Text,
 } from 'native-base';
 
-import { Location } from 'expo';
-
 import * as TaskManager from 'expo-task-manager';
+import * as Location from 'expo-location';
+
 import MapView from 'react-native-maps';
 
 import {
