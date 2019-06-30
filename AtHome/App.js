@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 
+import { Notifications } from 'expo';
+
+import * as Permissions from 'expo-permissions';
+
 import * as Font from 'expo-font';
 
 import {
@@ -41,6 +45,10 @@ export default class App extends Component {
         });
 
         this.setState({ fontsLoaded: true });
+
+        /* FIXME: this should be handled when sending the ride */
+        const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+        let token = await Notifications.getExpoPushTokenAsync();
     }
 
     /**

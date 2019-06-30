@@ -22,10 +22,18 @@ Open `global.js` and set the correct server URL:
 global.baseUrl = "http://api.your-url.com";
 ```
 
+## Expo login
+
+You must be logged in to Expo in order to use correctly the push notification token.
+
+```sh
+expo login
+```
+
 ## Start Expo
 
 ```sh
-yarn start
+expo start
 ```
 
 ## Credits
