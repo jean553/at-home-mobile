@@ -4,17 +4,30 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "test": "jest"
+  },
+  "jest": {
+    "preset": "jest-expo",
+    "setupFilesAfterEnv": [
+      "<rootDir>/enzyme.js"
+    ]
   },
   "dependencies": {
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
     "expo": "^33.0.3",
     "expo-cli": "^2.20.2",
     "expo-contacts": "^5.0.2",
     "expo-font": "^5.0.1",
     "expo-location": "^5.0.1",
     "expo-task-manager": "^5.0.1",
+    "jest": "^24.8.0",
+    "jest-enzyme": "^7.0.2",
+    "jest-expo": "^33.0.2",
     "native-base": "^2.12.1",
     "react": "16.8.3",
+    "react-dom": "^16.8.6",
     "react-native": "https://github.com/expo/react-native/archive/sdk-33.0.0.tar.gz",
     "react-native-background-task": "^0.2.1",
     "react-native-cli": "^2.0.1",
