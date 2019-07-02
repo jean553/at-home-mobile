@@ -36,6 +36,12 @@ expo login
 expo start
 ```
 
+## Run tests
+
+```sh
+yarn test
+```
+
 ## Credits
 
  * Flag map icon from https://material.io/tools/icons/?icon=flag&style=baseline / Apache License 2.0
